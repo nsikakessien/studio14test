@@ -7,13 +7,35 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import ResourceCard from "./ResourceCard";
-import type { Resource } from "../utils/constants";
+import { useContext, useEffect, useState } from "react";
+import resourceContext from "../context/resource/resourceContext";
+import { resourceTags, resourceTypes } from "../utils/constants";
 
-interface ResourceListProps {
-  filteredResources: Resource[];
-}
+export default function ResourceList() {
+  const { filteredResources, searchByTag, searchByType } =
+    useContext(resourceContext);
 
-export default function ResourceList({ filteredResources }: ResourceListProps) {
+  const [selectedTag, setSelectedTag] = useState<string[]>(resourceTags);
+  const [selectedType, setSelectedType] = useState<string[]>(resourceTypes);
+
+  useEffect(() => {
+    if (selectedTag.length > 0) {
+      searchByTag(selectedTag);
+    } else {
+      searchByTag([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTag]);
+
+  useEffect(() => {
+    if (selectedType.length > 0) {
+      searchByType(selectedType);
+    } else {
+      searchByType([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedType]);
+
   return (
     <>
       {/* Filters (desktop only) */}
@@ -35,158 +57,77 @@ export default function ResourceList({ filteredResources }: ResourceListProps) {
               Key Foundational Principles
             </Text>
             <VStack align="start" spacing={2}>
-              <Checkbox
-                icon={<></>}
-                sx={{
-                  "& .chakra-checkbox__control": {
-                    borderColor: "#3F3F3F",
-                    bg: "transparent",
-                    _checked: {
-                      bg: "#3F3F3F",
+              {resourceTags.map((resourceTag) => (
+                <Checkbox
+                  key={resourceTag}
+                  value={resourceTag}
+                  // icon={<span />}
+                  isChecked={selectedTag.includes(resourceTag)}
+                  onChange={() =>
+                    setSelectedTag((prev) =>
+                      prev.includes(resourceTag)
+                        ? prev.filter((tag) => tag !== resourceTag)
+                        : [...prev, resourceTag]
+                    )
+                  }
+                  sx={{
+                    "& .chakra-checkbox__control": {
                       borderColor: "#3F3F3F",
+                      bg: "transparent",
+                      _checked: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
+                      _hover: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
                     },
-                  },
-                }}
-                defaultChecked
-                color={"#3F3F3F"}
-              >
-                Secure Base
-              </Checkbox>
-              <Checkbox
-                icon={<></>}
-                color={"#3F3F3F"}
-                sx={{
-                  "& .chakra-checkbox__control": {
-                    borderColor: "#3F3F3F",
-                    bg: "transparent",
-                    _checked: {
-                      bg: "#3F3F3F",
-                      borderColor: "#3F3F3F",
-                    },
-                  },
-                }}
-              >
-                Sense of Appreciation
-              </Checkbox>
-              <Checkbox
-                icon={<></>}
-                color={"#3F3F3F"}
-                sx={{
-                  "& .chakra-checkbox__control": {
-                    borderColor: "#3F3F3F",
-                    bg: "transparent",
-                    _checked: {
-                      bg: "#3F3F3F",
-                      borderColor: "#3F3F3F",
-                    },
-                  },
-                }}
-              >
-                Learning Organisation
-              </Checkbox>
-              <Checkbox
-                icon={<></>}
-                color={"#3F3F3F"}
-                sx={{
-                  "& .chakra-checkbox__control": {
-                    borderColor: "#3F3F3F",
-                    bg: "transparent",
-                    _checked: {
-                      bg: "#3F3F3F",
-                      borderColor: "#3F3F3F",
-                    },
-                  },
-                }}
-              >
-                Mission and Vision
-              </Checkbox>
-              <Checkbox
-                icon={<></>}
-                color={"#3F3F3F"}
-                sx={{
-                  "& .chakra-checkbox__control": {
-                    borderColor: "#3F3F3F",
-                    bg: "transparent",
-                    _checked: {
-                      bg: "#3F3F3F",
-                      borderColor: "#3F3F3F",
-                    },
-                  },
-                }}
-                defaultChecked
-              >
-                Wellbeing
-              </Checkbox>
+                  }}
+                  color={"#3F3F3F"}
+                >
+                  {resourceTag}
+                </Checkbox>
+              ))}
             </VStack>
+
             <Box mt={6}>
               <Text fontWeight="semibold" mb={2}>
                 Document Type
               </Text>
               <VStack align="start" spacing={2}>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
+                {resourceTypes.map((resourceType) => (
+                  <Checkbox
+                    key={resourceType}
+                    value={resourceType}
+                    // icon={<span />}
+                    color={"#3F3F3F"}
+                    isChecked={selectedType.includes(resourceType)}
+                    onChange={() =>
+                      setSelectedType((prev) =>
+                        prev.includes(resourceType)
+                          ? prev.filter((type) => type !== resourceType)
+                          : [...prev, resourceType]
+                      )
+                    }
+                    sx={{
+                      "& .chakra-checkbox__control": {
                         borderColor: "#3F3F3F",
+                        bg: "transparent",
+                        _checked: {
+                          bg: "#3F3F3F",
+                          borderColor: "#3F3F3F",
+                        },
+                        _hover: {
+                          bg: "#3F3F3F",
+                          borderColor: "#3F3F3F",
+                        },
                       },
-                    },
-                  }}
-                >
-                  DOC
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                >
-                  Link
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                >
-                  PDF
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                >
-                  Video
-                </Checkbox>
+                    }}
+                  >
+                    {resourceType}
+                  </Checkbox>
+                ))}
               </VStack>
             </Box>
           </Box>

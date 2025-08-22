@@ -9,19 +9,31 @@ import {
   Button,
   VStack,
   Image,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useDisclosure,
+  Checkbox,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 import { FiSliders } from "react-icons/fi";
 import SearchIcon from "../assets/search.svg";
+import { useContext, useEffect, useState } from "react";
+import resourceContext from "../context/resource/resourceContext";
 
-interface ResourceHeroProps {
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-}
+export default function ResourcesHero() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { searchResources } = useContext(resourceContext);
 
-export default function ResourcesHero({
-  search,
-  setSearch,
-}: ResourceHeroProps) {
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    searchResources(search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
   return (
     <Box
       as="section"
@@ -82,9 +94,107 @@ export default function ResourcesHero({
           leftIcon={<Icon as={FiSliders} />}
           variant="ghost"
           display={{ base: "inline-flex", md: "none" }}
+          onClick={onOpen}
         >
           Show Filters
         </Button>
+
+        {/* Mobile Drawer */}
+        <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+          <DrawerOverlay />
+
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Filters</DrawerHeader>
+
+            <DrawerBody>
+              <VStack align="start" spacing={2}>
+                <Checkbox
+                  icon={<></>}
+                  sx={{
+                    "& .chakra-checkbox__control": {
+                      borderColor: "#3F3F3F",
+                      bg: "transparent",
+                      _checked: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
+                    },
+                  }}
+                  defaultChecked
+                  color={"#3F3F3F"}
+                >
+                  Secure Base
+                </Checkbox>
+                <Checkbox
+                  icon={<></>}
+                  color={"#3F3F3F"}
+                  sx={{
+                    "& .chakra-checkbox__control": {
+                      borderColor: "#3F3F3F",
+                      bg: "transparent",
+                      _checked: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
+                    },
+                  }}
+                >
+                  Sense of Appreciation
+                </Checkbox>
+                <Checkbox
+                  icon={<></>}
+                  color={"#3F3F3F"}
+                  sx={{
+                    "& .chakra-checkbox__control": {
+                      borderColor: "#3F3F3F",
+                      bg: "transparent",
+                      _checked: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
+                    },
+                  }}
+                >
+                  Learning Organisation
+                </Checkbox>
+                <Checkbox
+                  icon={<></>}
+                  color={"#3F3F3F"}
+                  sx={{
+                    "& .chakra-checkbox__control": {
+                      borderColor: "#3F3F3F",
+                      bg: "transparent",
+                      _checked: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
+                    },
+                  }}
+                >
+                  Mission and Vision
+                </Checkbox>
+                <Checkbox
+                  icon={<></>}
+                  color={"#3F3F3F"}
+                  sx={{
+                    "& .chakra-checkbox__control": {
+                      borderColor: "#3F3F3F",
+                      bg: "transparent",
+                      _checked: {
+                        bg: "#3F3F3F",
+                        borderColor: "#3F3F3F",
+                      },
+                    },
+                  }}
+                  defaultChecked
+                >
+                  Wellbeing
+                </Checkbox>
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
       </VStack>
     </Box>
   );

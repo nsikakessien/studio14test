@@ -12,7 +12,7 @@ export type Resource = {
   title: string;
   topic: string;
   tag: string;
-  type: "pdf" | "video" | "link" | "doc";
+  type: "PDF" | "Video" | "Link" | "DOC";
   image?: string;
   icon?: string;
   styles?: {
@@ -32,7 +32,7 @@ export const resources: Resource[] = [
     title: "The ultimate guide to Workplace Chat",
     topic: "Sample Topic",
     tag: "Secure Base",
-    type: "link",
+    type: "Link",
     image: RedCurveSvg,
     icon: LinkSvg,
     styles: {
@@ -45,7 +45,7 @@ export const resources: Resource[] = [
     title: "The ultimate guide to Workplace Chat",
     topic: "Sample Topic",
     tag: "Secure Base",
-    type: "video",
+    type: "Video",
     image: GreenCurveSvg,
     icon: TVPlaySvg,
     styles: {
@@ -60,7 +60,7 @@ export const resources: Resource[] = [
     title: "The ultimate guide to Workplace Chat",
     topic: "Sample Topic",
     tag: "Secure Base",
-    type: "link",
+    type: "Link",
     image: RedCurveSvg,
     icon: LinkSvg,
     styles: {
@@ -73,7 +73,7 @@ export const resources: Resource[] = [
     title: "The ultimate guide to Workplace Chat",
     topic: "Sample Topic",
     tag: "Wellbeing",
-    type: "video",
+    type: "Video",
     image: OrangeCurveSvg,
     icon: TVPlaySvg,
     styles: {
@@ -88,7 +88,7 @@ export const resources: Resource[] = [
     title: "The ultimate guide to Workplace Chat",
     topic: "Sample Topic",
     tag: "Secure Base",
-    type: "pdf",
+    type: "PDF",
     image: YellowCurveSvg,
     icon: PDFSvg,
     styles: {
@@ -103,7 +103,7 @@ export const resources: Resource[] = [
     title: "Taking stock of mental health in your workplace",
     topic: "Sample Topic",
     tag: "Secure Base",
-    type: "doc",
+    type: "DOC",
     image: BlueCurveSvg,
     icon: PDFSvg,
     styles: {
@@ -111,4 +111,13 @@ export const resources: Resource[] = [
       right: "0",
     },
   },
+];
+
+export const resourceTypes = ["DOC", "Link", "PDF", "Video"];
+export const resourceTags = [
+  "Secure Base",
+  "Sense of Appreciation",
+  "Learning Organisation",
+  "Mission and Vision",
+  "Wellbeing",
 ];
