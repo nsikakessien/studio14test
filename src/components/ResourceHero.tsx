@@ -18,16 +18,27 @@ import {
   Checkbox,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import { FiSliders } from "react-icons/fi";
+import { IoFilterSharp } from "react-icons/io5";
 import SearchIcon from "../assets/search.svg";
 import { useContext, useEffect, useState } from "react";
 import resourceContext from "../context/resource/resourceContext";
+import { resourceTags } from "../utils/constants";
 
 export default function ResourcesHero() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { searchResources } = useContext(resourceContext);
+  const { searchResources, searchByTag } = useContext(resourceContext);
 
   const [search, setSearch] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string[]>(resourceTags);
+
+  useEffect(() => {
+    if (selectedTag.length > 0) {
+      searchByTag(selectedTag);
+    } else {
+      searchByTag([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTag]);
 
   useEffect(() => {
     searchResources(search);
@@ -91,7 +102,7 @@ export default function ResourcesHero() {
 
         {/* Mobile: Show Filters */}
         <Button
-          leftIcon={<Icon as={FiSliders} />}
+          leftIcon={<Icon as={IoFilterSharp} />}
           variant="ghost"
           display={{ base: "inline-flex", md: "none" }}
           onClick={onOpen}
@@ -109,88 +120,38 @@ export default function ResourcesHero() {
 
             <DrawerBody>
               <VStack align="start" spacing={2}>
-                <Checkbox
-                  icon={<></>}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
+                {resourceTags.map((resourceTag) => (
+                  <Checkbox
+                    key={resourceTag}
+                    value={resourceTag}
+                    // icon={<span />}
+                    isChecked={selectedTag.includes(resourceTag)}
+                    onChange={() =>
+                      setSelectedTag((prev) =>
+                        prev.includes(resourceTag)
+                          ? prev.filter((tag) => tag !== resourceTag)
+                          : [...prev, resourceTag]
+                      )
+                    }
+                    sx={{
+                      "& .chakra-checkbox__control": {
                         borderColor: "#3F3F3F",
+                        bg: "transparent",
+                        _checked: {
+                          bg: "#3F3F3F",
+                          borderColor: "#3F3F3F",
+                        },
+                        _hover: {
+                          bg: "#3F3F3F",
+                          borderColor: "#3F3F3F",
+                        },
                       },
-                    },
-                  }}
-                  defaultChecked
-                  color={"#3F3F3F"}
-                >
-                  Secure Base
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                >
-                  Sense of Appreciation
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                >
-                  Learning Organisation
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                >
-                  Mission and Vision
-                </Checkbox>
-                <Checkbox
-                  icon={<></>}
-                  color={"#3F3F3F"}
-                  sx={{
-                    "& .chakra-checkbox__control": {
-                      borderColor: "#3F3F3F",
-                      bg: "transparent",
-                      _checked: {
-                        bg: "#3F3F3F",
-                        borderColor: "#3F3F3F",
-                      },
-                    },
-                  }}
-                  defaultChecked
-                >
-                  Wellbeing
-                </Checkbox>
+                    }}
+                    color={"#3F3F3F"}
+                  >
+                    {resourceTag}
+                  </Checkbox>
+                ))}
               </VStack>
             </DrawerBody>
           </DrawerContent>
